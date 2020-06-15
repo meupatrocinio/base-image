@@ -11,8 +11,10 @@ RUN \
     nginx zip unzip\
     imagemagick webp libmagickwand-dev libyaml-dev \
     python3 python3-numpy libopencv-dev python3-setuptools opencv-data \
-    gcc nasm build-essential make wget vim git \
-    cmake autoconf automake libtool nasm make pkg-config git && \
+    gcc git libnginx-mod-http-lua \
+    # gcc nasm build-essential make wget vim git \
+    ghostscript ffmpeg && \ 
+    # cmake autoconf automake libtool nasm pkg-config && \
     rm -rf /var/lib/apt/lists/*
 
 #opcache
@@ -58,6 +60,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 #disable output access.log to stdout
 RUN sed -i -e 's#access.log = /proc/self/fd/2#access.log = /proc/self/fd/1#g'  /usr/local/etc/php-fpm.d/docker.conf
 
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 #copy etc/
 COPY resources/etc/ /etc/
 
@@ -68,5 +71,5 @@ RUN chmod +x /usr/local/bin/docker-entrypoint
 
 WORKDIR /var/www/html
 
-ENTRYPOINT ["docker-entrypoint", "/init"]
+CMD ["docker-entrypoint", "/init"]
 
