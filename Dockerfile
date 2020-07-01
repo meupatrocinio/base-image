@@ -65,7 +65,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 COPY resources/etc/ /etc/
 
 ENV PORT 80
-
+EXPOSE ${PORT} 9145
 COPY resources/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
